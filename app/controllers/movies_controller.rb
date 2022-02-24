@@ -3,7 +3,7 @@ class MoviesController < ApplicationController
   def index
     @hilite = {}
     @all_ratings = Movie.all_ratings
-    ratings = params["ratings"]
+    @ratings = params["ratings"]
     
     if params[:sort_by]
       @movies = Movie.all.order params[:sort_by] 
@@ -14,11 +14,10 @@ class MoviesController < ApplicationController
       @hilite[:release_date] = ''
     end
 
-    if ratings
-      @movies = Movie.where(rating: ratings.keys)
+    if @ratings
+      @movies = Movie.where(rating: @ratings.keys)
     end
 
-    
   end
 
   def show

@@ -6,8 +6,12 @@
   - @all_ratings.each do |rating|
     = rating
     -# Rails will aggregate the values into a single hash called ratings (ratings[G], ratings[R], ...)
-    -# if R and G are selected: ratings = {'R' => 1, 'G' => 1}
-    = check_box_tag "ratings[#{rating}]"
+    -# if R and G are selected: ratings = {'R' => '1', 'G' => '1'}
+    -if @ratings == nil
+      -checked = true
+    -else
+      -checked = if @ratings["#{rating}"] == '1' then true else false end
+    = check_box_tag "ratings[#{rating}]", '1', checked
   = submit_tag 'Refresh'
 
 %table#movies
