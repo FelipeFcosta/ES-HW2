@@ -5,9 +5,9 @@
   %thead
     %tr
       -# pass value to movies_path, so we can use them as params[:sort_by] in the controller 
-      %th= link_to 'Movie Title', movies_path(:sort_by=>"title"), :id=>"title_header"
-      %th= link_to 'Rating', movies_path(:sort_by=>"rating"), :id=>"release_date_header"
-      %th Release Date
+      %th{:class => @hilite["title"]}= link_to 'Movie Title', movies_path(:sort_by=>"title"), :id=>"title_header"
+      %th Rating
+      %th{:class => @hilite["release_date"]}= link_to 'Release Date', movies_path(:sort_by=>"release_date"), :id=>"release_date_header"
       %th More Info
   %tbody
     - @movies.each do |movie|
