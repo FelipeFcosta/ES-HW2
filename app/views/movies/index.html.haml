@@ -4,8 +4,9 @@
 %table#movies
   %thead
     %tr
-      %th Movie Title
-      %th Rating
+      -# pass value to movies_path, so we can use them as params[:sort_by] in the controller 
+      %th= link_to 'Movie Title', movies_path(:sort_by=>"title"), :id=>"title_header"
+      %th= link_to 'Rating', movies_path(:sort_by=>"rating"), :id=>"release_date_header"
       %th Release Date
       %th More Info
   %tbody

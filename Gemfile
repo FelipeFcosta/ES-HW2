@@ -54,3 +54,6 @@ end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+
+# nokogiri was hanging the bundle install process (so I update it)
+gem 'nokogiri', '~> 1.13.3'
