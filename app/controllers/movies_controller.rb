@@ -6,7 +6,7 @@ class MoviesController < ApplicationController
     @ratings = params["ratings"]
     
     if params[:sort_by]
-      @movies = Movie.all.order params[:sort_by] 
+      @movies = Movie.all.order params[:sort_by]
       @hilite[params[:sort_by]] = 'hilite'
     else
       @movies = Movie.all

@@ -1,17 +1,17 @@
 -#  This file is app/views/movies/index.html.haml
 %h1 All Movies
 
-= form_tag movies_path, :method => :get do
+= form_tag movies_path, :method => :get, :id=>'request_form' do
   Include: 
   - @all_ratings.each do |rating|
     = rating
     -# Rails will aggregate the values into a single hash called ratings (ratings[G], ratings[R], ...)
     -# if R and G are selected: ratings = {'R' => '1', 'G' => '1'}
     -if @ratings == nil
-      -checked = true
+      -checked = true # checked by default
     -else
       -checked = if @ratings["#{rating}"] == '1' then true else false end
-    = check_box_tag "ratings[#{rating}]", '1', checked
+    = check_box_tag "ratings[#{rating}]", '1', checked, id: "ratings_#{rating}"
   = submit_tag 'Refresh'
 
 %table#movies
