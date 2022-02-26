@@ -1,23 +1,50 @@
 # This file is app/controllers/movies_controller.rb
 class MoviesController < ApplicationController
   def index
-    @hilite = {}
     @all_ratings = Movie.all_ratings
-    @ratings = params["ratings"]
+    @hilite = {}
+    @movies = {}
+    @ratings = {}
+    sort_by = params[:sort_by] || session[:sort_by];
+
+    @hilite[sort_by] = sort_by ? 'hilite' : ''
+
+    if params["ratings"] # user just clicked to filter
+      session[:ratings] = params["ratings"]
+      session[:all_empty_boxes] = nil
+    end
     
-    if params[:sort_by]
-      @movies = Movie.all.order params[:sort_by]
-      @hilite[params[:sort_by]] = 'hilite'
-    else
-      @movies = Movie.all
-      @hilite[:title] = ''
-      @hilite[:release_date] = ''
+    if params[:sort_by]  # user just clicked to sort
+      # clicking twice reverts the sort effect
+      if flash[:sort_by] == params[:sort_by]
+        @movies = Movie.all
+        session[:sort_by] = nil
+        sort_by = nil
+        redirect_to movies_path
+      else
+        flash[:sort_by] = params[:sort_by]
+        session[:sort_by] = params[:sort_by]
+      end
     end
 
-    if @ratings
-      @movies = Movie.where(rating: @ratings.keys)
-    end
+    if params[:commit] && !params["ratings"]    # user unselected all checkboxes and filtered
+      @movies = {}
+      @ratings = {}
+      session.clear()
+      session[:all_empty_boxes] = true
+    elsif !session[:all_empty_boxes]             # there's at least one checkbox selected
+      @ratings = params["ratings"] || session[:ratings];
 
+      if sort_by && !@ratings  # only sort
+        @movies = Movie.all.order(session[:sort_by]);
+      elsif @ratings && !sort_by # only filter
+        @movies = Movie.where(rating: @ratings.keys)
+      elsif !@ratings && !sort_by
+        @movies = Movie.all;
+      else
+        @movies = Movie.all.order(session[:sort_by]).where(rating: @ratings.keys)
+      end
+    end
   end
 
   def show
